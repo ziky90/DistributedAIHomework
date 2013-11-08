@@ -14,6 +14,13 @@ public class Profile {
     private String ocupancy;
     
     private ArrayList<String> interests;
+    
+    public Profile(){
+    }
+    
+    public Profile(String name){
+        this.name = name;
+    }
 
     public String getName() {
         return name;
