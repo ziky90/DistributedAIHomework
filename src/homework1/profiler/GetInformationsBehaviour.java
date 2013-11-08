@@ -1,21 +1,18 @@
 package homework1.profiler;
 
-import jade.core.behaviours.Behaviour;
+import jade.core.Agent;
+import jade.lang.acl.MessageTemplate;
+import jade.proto.SimpleAchieveREResponder;
 
 /**
+ * Information behavior for the profiler agent to ask for the detailed
+ * informations to the curator agent
  *
  * @author zikesjan
  */
-public class GetInformationsBehaviour extends Behaviour{
+public class GetInformationsBehaviour extends SimpleAchieveREResponder {
 
-    @Override
-    public void action() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public GetInformationsBehaviour(Agent a, MessageTemplate msg) {
+        super(a, msg);
     }
-
-    @Override
-    public boolean done() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
 }

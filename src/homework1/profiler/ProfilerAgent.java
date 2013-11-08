@@ -6,7 +6,7 @@ import jade.core.AID;
 import jade.core.Agent;
 
 /**
- *
+ * Profoler Agent that represents users profile
  * @author zikesjan
  */
 public class ProfilerAgent extends Agent{

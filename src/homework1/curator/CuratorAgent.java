@@ -4,7 +4,7 @@ import jade.core.AID;
 import jade.core.Agent;
 
 /**
- *
+ * Agent that represents the curator
  * @author zikesjan
  */
 public class CuratorAgent extends Agent{

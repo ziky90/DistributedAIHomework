@@ -4,7 +4,7 @@ import jade.core.AID;
 import jade.core.Agent;
 
 /**
- *
+ * Tour guide agent that represents thetour guide
  * @author zikesjan
  */
 public class TourGuideAgent extends Agent{
