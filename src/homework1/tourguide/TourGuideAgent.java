@@ -1,5 +1,6 @@
 package homework1.tourguide;
 
+import homework1.tourguide.behaviours.RegistrationsReciever;
 import jade.core.AID;
 import jade.core.Agent;
 
@@ -14,6 +15,8 @@ public class TourGuideAgent extends Agent{
     @Override
     protected void setup(){
         System.out.println("Hello this is tour guide agent: "+getAID().getName());
+        
+        addBehaviour(new RegistrationsReciever());
     }
     
 }

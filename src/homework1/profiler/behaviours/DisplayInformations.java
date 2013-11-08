@@ -1,4 +1,4 @@
-package homework1.profiler;
+package homework1.profiler.behaviours;
 
 import jade.core.behaviours.FSMBehaviour;
 

@@ -1,4 +1,4 @@
-package homework1.tourguide;
+package homework1.tourguide.behaviours;
 
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
