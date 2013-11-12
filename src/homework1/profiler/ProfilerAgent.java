@@ -1,9 +1,15 @@
 package homework1.profiler;
 
-import homework1.profiler.behaviours.RegisterAtTourGuide;
+import homework1.tourguide.TourGuideAgent;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Profoler Agent that represents users profile
@@ -13,37 +19,64 @@ import java.util.ArrayList;
 public class ProfilerAgent extends Agent {
 
     AID id = new AID("profiler", AID.ISLOCALNAME);
+    private Profile p;
+    AID tourGuide;
 
     @Override
     protected void setup() {
-        //creating profile object from the informations passed as the arguments 
-        Object[] args = getArguments();
-        Profile p = null;
-        if (args != null) {
-            p = new Profile();
-            p.setName((String) args[0]);
-            if (args.length > 1) {
-                p.setAge(Integer.parseInt((String) args[1]));
-                if (args.length > 2) {
-                    p.setOcupancy((String) args[2]);
-                    ArrayList<String> interests = new ArrayList<String>();
-                    for (int i = 3; i < args.length; i++) {
-                        interests.add((String) args[i]);
-                        p.setInterests(interests);
-                    }
-                }
-            }
+
+        System.out.println("<" + getLocalName() + ">: started");
+
+        ArrayList<String> interests = new ArrayList<String>();
+        interests.add("cars");
+        interests.add("planes");
+        interests.add("computers");
+        interests.add("paintings");
+        p = new Profile("user1", 25, "student at KTH", interests);
+
+        System.out.println("<" + getLocalName() + ">: profile created");
 
 
+        //searching offered tours in services
+        DFAgentDescription dfd = new DFAgentDescription();
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("offer tour");
+        dfd.addServices(sd);
+        DFAgentDescription[] result = null;
+        try {
+            result = DFService.search(this, dfd);
+        } catch (FIPAException ex) {
+            Logger.getLogger(TourGuideAgent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("<" + getLocalName() + ">: found " + result.length + " tour guides");
+        if (result.length > 0) {
+            tourGuide = result[0].getName();
+            System.out.println("<" + getLocalName() + ">: found " + result[0].getName());
         }
 
-        if (p != null) {
-            p.setName(id.getName());
-            p.setAge(23);
-            p.setOcupancy("job");
-            addBehaviour(new RegisterAtTourGuide(p));
-        } else {
-            System.out.println("Please set your personal informations");
+        //TODO ask the tourguide for tour
+        //TODO ask user to chose museum
+        //TODO ask the curator for details
+
+    }
+
+    private void getDetails() {
+        //searching available offer artifact
+        DFAgentDescription dfd = new DFAgentDescription();
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("offer artifact details");
+        dfd.addServices(sd);
+        DFAgentDescription[] result = null;
+        try {
+            result = DFService.search(this, dfd);
+        } catch (FIPAException ex) {
+            Logger.getLogger(TourGuideAgent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("<" + getLocalName() + ">: found " + result.length + " museums");
+        if (result.length > 0) {
+            for (DFAgentDescription desc : result) {
+                System.out.println("<" + getLocalName() + ">: found " + desc.getName());
+            }
         }
     }
 }

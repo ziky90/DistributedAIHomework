@@ -2,6 +2,7 @@ package homework1.curator.behaviours;
 
 import homework1.curator.Element;
 import homework1.curator.ElementsDatabase;
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.io.IOException;
@@ -14,6 +15,11 @@ import java.util.logging.Logger;
  */
 public class OfferArtifactsDetails extends CyclicBehaviour{
 
+    public OfferArtifactsDetails(Agent a){
+        super(a);
+    }
+    
+    
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive();

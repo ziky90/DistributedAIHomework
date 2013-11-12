@@ -2,6 +2,7 @@ package homework1.curator;
 
 import homework1.curator.behaviours.OfferArtifactsDetails;
 import homework1.curator.behaviours.OfferCatalog;
+import homework1.profiler.Profile;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.ParallelBehaviour;
@@ -23,9 +24,23 @@ public class CuratorAgent extends Agent {
     protected void setup() {
         System.out.println("<" + getLocalName() + ">: started");
 
-        ParallelBehaviour mainBehaviour = new ParallelBehaviour(ParallelBehaviour.WHEN_ALL);
-        mainBehaviour.addSubBehaviour(new OfferArtifactsDetails());
-        mainBehaviour.addSubBehaviour(new OfferCatalog());
+        Object[] args = getArguments();
+        int situation = 0;
+        if (args != null) {
+            situation = Integer.parseInt((String) args[0]);
+        }else{
+            System.out.println("<" + getLocalName() + ">: particular museum not set -> terminating");
+            return;
+        }
+        
+        ElementsDatabase.createDatabase(situation);
+        
+        System.out.println("<" + getLocalName() + ">: database generated");
+        
+        ParallelBehaviour mainBehaviour = new ParallelBehaviour(this, ParallelBehaviour.WHEN_ALL);
+        mainBehaviour.addSubBehaviour(new OfferArtifactsDetails(this));
+        mainBehaviour.addSubBehaviour(new OfferCatalog(this));
+        addBehaviour(mainBehaviour);
 
         System.out.println("<" + getLocalName() + ">: behaviour set up");
 
