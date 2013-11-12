@@ -12,16 +12,17 @@ import java.util.logging.Logger;
  * behaviour that should response to all the requests for the particular item
  * @author zikesjan
  */
-public class OfferArtifacts extends CyclicBehaviour{
+public class OfferArtifactsDetails extends CyclicBehaviour{
 
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive();
         if(msg != null){
             String name = msg.getContent();
+            System.out.println("<"+myAgent.getLocalName()+">:: request for element "+name);
             Element e = ElementsDatabase.getElement(name);
             
-            ACLMessage reply = msg.createReply();                               //TODO perform sending of the element to the client
+            ACLMessage reply = msg.createReply();                               
             
             if(e != null){
                 try {
@@ -29,13 +30,15 @@ public class OfferArtifacts extends CyclicBehaviour{
                     reply.setPerformative(ACLMessage.PROPOSE);
                     
                 } catch (IOException ex) {
-                    Logger.getLogger(OfferArtifacts.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OfferArtifactsDetails.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }else{
+                System.out.println("<"+myAgent.getLocalName()+">:: Desired item not found");
                 reply.setContent("Desired item not found");      
                 reply.setPerformative(ACLMessage.REFUSE);
             }
             myAgent.send(reply);
+            System.out.println("<"+myAgent.getLocalName()+">:: elements "+ name +" details sent");
         }
     }
     

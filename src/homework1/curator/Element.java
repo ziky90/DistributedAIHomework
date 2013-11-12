@@ -10,18 +10,21 @@ public class Element implements Serializable{
     
     private String name;
     
+    private String type;
+    
     private String author;
     
-    private String completationYear;
+    private int completationYear;
 
     public Element(){
         
     }
 
-    public Element(String name, String author, String completationYear) {
+    public Element(String name, String author, int completationYear, String type) {
         this.name = name;
         this.author = author;
         this.completationYear = completationYear;
+        this.type = type;
     }
     
     
@@ -42,12 +45,20 @@ public class Element implements Serializable{
         this.author = author;
     }
 
-    public String getCompletationYear() {
+    public int getCompletationYear() {
         return completationYear;
     }
 
-    public void setCompletationYear(String completationYear) {
+    public void setCompletationYear(int completationYear) {
         this.completationYear = completationYear;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
     
     

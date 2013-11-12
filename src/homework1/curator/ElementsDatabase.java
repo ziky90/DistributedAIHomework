@@ -1,6 +1,7 @@
 package homework1.curator;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * class that simulates the database of the curator agent
@@ -19,6 +20,12 @@ public class ElementsDatabase {
     
     public static Element getElement(String s){
         return data.get(s);
+    }
+    
+    public static String[] getCatalog(){
+        String[] catalog = new String[data.keySet().size()];
+        catalog = data.keySet().toArray(catalog);
+        return catalog;
     }
     
     
