@@ -22,21 +22,27 @@ public class ProfilerAgent extends Agent {
         if (args != null) {
             p = new Profile();
             p.setName((String) args[0]);
-            p.setAge(Integer.parseInt((String) args[1]));
-            p.setOcupancy((String) args[2]);
-            ArrayList<String> interests = new ArrayList<String>();
-            for (int i = 3; i < args.length; i++) {
-                interests.add((String) args[i]);
+            if (args.length > 1) {
+                p.setAge(Integer.parseInt((String) args[1]));
+                if (args.length > 2) {
+                    p.setOcupancy((String) args[2]);
+                    ArrayList<String> interests = new ArrayList<String>();
+                    for (int i = 3; i < args.length; i++) {
+                        interests.add((String) args[i]);
+                        p.setInterests(interests);
+                    }
+                }
             }
-            p.setInterests(interests);
+
+
         }
 
-        if(p != null){
+        if (p != null) {
             p.setName(id.getName());
             p.setAge(23);
             p.setOcupancy("job");
             addBehaviour(new RegisterAtTourGuide(p));
-        }else{
+        } else {
             System.out.println("Please set your personal informations");
         }
     }

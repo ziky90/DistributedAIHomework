@@ -1,12 +1,13 @@
 package homework1.profiler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author zikesjan
  */
-public class Profile {
+public class Profile implements Serializable{
     private String name;
     
     private int age;

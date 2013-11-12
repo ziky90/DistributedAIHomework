@@ -1,10 +1,12 @@
 package homework1.curator;
 
+import java.io.Serializable;
+
 /**
  * Representation of the one particular art element
  * @author zikesjan
  */
-public class Element {
+public class Element implements Serializable{
     
     private String name;
     
