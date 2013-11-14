@@ -1,8 +1,6 @@
 package homework1.profiler.behaviours;
 
 import homework1.profiler.ProfilerAgent;
-import homework1.tourguide.TourGuideAgent;
-import jade.core.AID;
 import jade.core.behaviours.DataStore;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

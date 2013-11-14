@@ -2,7 +2,6 @@ package homework1.tourguide.behaviours;
 
 import homework1.tourguide.TourGuideAgent;
 import jade.core.AID;
-import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;

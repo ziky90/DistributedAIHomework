@@ -1,6 +1,5 @@
 package homework1.tourguide.behaviours;
 
-import homework1.curator.Element;
 import homework1.profiler.behaviours.GetDetailsBehaviour;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
