@@ -9,6 +9,8 @@ First of all you need to download jade library from:
 http://jade.tilab.com/
 <br><br>
 Then you have several options:<br><br>
+0) By far the easiest way is to create from this source new NetBeans project and fom this launch the jade platform and then use GUI to start particular agents<br>
+NOTE: CuratorAgent should be launched with the int paramete in range 0-2<br><br>
 1) You can fork and pull whole repository to your NetBeans and simply add downloaded jar to the project<br>
 prameters to set:<br>
 -gui -agents "curator:homework1.curator.CuratorAgent(0);profiler:homework1.profiler.ProfilerAgent;tour_guide:homework1.tourguide.TourGuideAgent"<br><br>
