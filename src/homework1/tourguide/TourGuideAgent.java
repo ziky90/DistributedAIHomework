@@ -1,12 +1,20 @@
 package homework1.tourguide;
 
+import homework1.tourguide.behaviours.GenerateTourReciever;
+import homework1.tourguide.behaviours.TourSenderBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.DataStore;
+import jade.core.behaviours.SequentialBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.domain.FIPANames;
+import jade.lang.acl.MessageTemplate;
+import jade.proto.AchieveREResponder;
+import jade.proto.states.MsgReceiver;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +28,7 @@ public class TourGuideAgent extends Agent {
 
     private AID id = new AID("tour_guide", AID.ISLOCALNAME);
     public ArrayList<AID> museums = new ArrayList<AID>();
+    public String[][] informations = new String[3][4];
 
     @Override
     protected void setup() {
@@ -68,5 +77,13 @@ public class TourGuideAgent extends Agent {
             fe.printStackTrace();
         }
 
+        SequentialBehaviour sb = new SequentialBehaviour(this);
+        MessageTemplate mt = AchieveREResponder.createMessageTemplate(FIPANames.InteractionProtocol.FIPA_REQUEST);
+        DataStore ds = new DataStore();
+        sb.addSubBehaviour(new GenerateTourReciever(this, mt, MsgReceiver.INFINITE, ds, "key"));
+        //TODO add paralel getting catalogs from museums
+        sb.addSubBehaviour(new TourSenderBehaviour(this));
+        addBehaviour(sb);
+        
     }
 }

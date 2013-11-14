@@ -1,15 +1,15 @@
 package homework1.curator;
 
-import homework1.curator.behaviours.OfferArtifactsDetails;
-import homework1.curator.behaviours.OfferCatalog;
-import homework1.profiler.Profile;
+import homework1.curator.behaviours.IncomingMessageHandler;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.ParallelBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.domain.FIPANames;
+import jade.lang.acl.MessageTemplate;
+import jade.proto.AchieveREResponder;
 
 /**
  * Agent that represents the curator
@@ -37,10 +37,8 @@ public class CuratorAgent extends Agent {
         
         System.out.println("<" + getLocalName() + ">: database generated");
         
-        ParallelBehaviour mainBehaviour = new ParallelBehaviour(this, ParallelBehaviour.WHEN_ALL);
-        mainBehaviour.addSubBehaviour(new OfferArtifactsDetails(this));
-        mainBehaviour.addSubBehaviour(new OfferCatalog(this));
-        addBehaviour(mainBehaviour);
+        MessageTemplate mt = AchieveREResponder.createMessageTemplate(FIPANames.InteractionProtocol.FIPA_REQUEST);
+        addBehaviour(new IncomingMessageHandler(this, mt));
 
         System.out.println("<" + getLocalName() + ">: behaviour set up");
 
