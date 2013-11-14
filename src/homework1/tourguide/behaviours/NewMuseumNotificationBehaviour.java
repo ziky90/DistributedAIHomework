@@ -25,10 +25,12 @@ public class NewMuseumNotificationBehaviour extends CyclicBehaviour {
         ACLMessage msg = myAgent.receive(MessageTemplate.MatchSender(myAgent.getDefaultDF()));
 
         if (msg != null) {
+            
             try {
                 DFAgentDescription[] dfds = DFService.decodeNotification(msg.getContent());
                 if (dfds.length > 0) {
                     tga.museums.add(dfds[0].getName());
+                    System.out.println("<"+myAgent.getLocalName()+"> new museums service registered "+ dfds[0].getName());
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

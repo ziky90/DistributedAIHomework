@@ -1,6 +1,5 @@
 package homework1.profiler;
 
-
 import homework1.profiler.behaviours.AskForTourRequestBehaviour;
 import homework1.profiler.behaviours.GetDetailsBehaviour;
 import homework1.profiler.behaviours.TourInformationsReceiver;
@@ -17,7 +16,11 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.states.MsgReceiver;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,9 +31,11 @@ import java.util.logging.Logger;
  */
 public class ProfilerAgent extends Agent {
 
-    AID id = new AID("profiler", AID.ISLOCALNAME);
+    public AID id = new AID("profiler", AID.ISLOCALNAME);
     public Profile p;
-    AID tourGuide;
+    public AID tourGuide;
+    public ArrayList<String> museums = new ArrayList<String>();
+    public HashMap<String, String[]> map = new HashMap<String, String[]>();
 
     @Override
     protected void setup() {
@@ -38,18 +43,17 @@ public class ProfilerAgent extends Agent {
         System.out.println("<" + getLocalName() + ">: started");
 
         ArrayList<String> interests = new ArrayList<String>();
-        interests.add("cars");
-        interests.add("planes");
-        interests.add("computers");
-        interests.add("paintings");
+        interests.add("car");
+        interests.add("plane");
+        interests.add("computer");
+        interests.add("painting");
         p = new Profile("user1", 25, "student at KTH", interests);
 
         System.out.println("<" + getLocalName() + ">: profile created");
 
-        //getDetails("curator", "Venus");
         askForTour();
-        
-        
+
+
         //searching offered tours in services
         DFAgentDescription dfd = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
@@ -67,53 +71,52 @@ public class ProfilerAgent extends Agent {
             System.out.println("<" + getLocalName() + ">: found " + result[0].getName());
         }
 
-        //TODO ask the tourguide for tour
-        //TODO ask user to chose museum
-        //TODO ask the curator for details
-
     }
 
     private void getDetails(String museum, String artefact) {
         //searching available offer artifact
-        
+
         ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
         request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
         request.addReceiver(new AID(museum, AID.ISLOCALNAME));
         addBehaviour(new GetDetailsBehaviour(this, request, artefact));
-        /*DFAgentDescription dfd = new DFAgentDescription();
-        ServiceDescription sd = new ServiceDescription();
-        sd.setType("offer artifact details");
-        dfd.addServices(sd);
-        DFAgentDescription[] result = null;
-        try {
-            result = DFService.search(this, dfd);
-        } catch (FIPAException ex) {
-            Logger.getLogger(TourGuideAgent.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println("<" + getLocalName() + ">: found " + result.length + " museums");
-        if (result.length > 0) {
-            for (DFAgentDescription desc : result) {
-                System.out.println("<" + getLocalName() + ">: found " + desc.getName());
-            }
-        }*/
+
     }
-    
-    private void askForTour(){
-        /*ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-        request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        request.addReceiver(new AID("tour_guide", AID.ISLOCALNAME));
-        addBehaviour(new AskForTourBehaviour(this, request, p));*/
+
+    private void askForTour() {
         SequentialBehaviour sb = new SequentialBehaviour(this);
         MessageTemplate mt = MessageTemplate.MatchSender(new AID("tour_guide", AID.ISLOCALNAME));
         DataStore ds = new DataStore();
         sb.addSubBehaviour(new AskForTourRequestBehaviour(this));
         sb.addSubBehaviour(new TourInformationsReceiver(this, mt, MsgReceiver.INFINITE, ds, "key"));
-        //TODO add paralel getting catalogs from museums
-        
         addBehaviour(sb);
     }
-    
-    public void askForTheMuseum(){
-        
+
+    public void askForTheMuseum() {
+        int i = 0;
+        for (String s : museums) {
+            if (s != null) {
+                System.out.println(i + ") " + s);
+                i++;
+            }
+        }
+        System.out.println("Type the museums number: ");
+
+        int museum = 0;
+
+        try {
+            BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+            String s = bufferRead.readLine();
+            museum = Integer.parseInt(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (museum > i - 1) {
+            askForTheMuseum();
+        } else {
+            for (String s : map.get(museums.get(museum))) {
+                getDetails(museums.get(museum), s);
+            }
+        }
     }
 }

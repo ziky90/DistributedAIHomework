@@ -1,6 +1,7 @@
 package homework1.tourguide.behaviours;
 
 import homework1.profiler.behaviours.GetDetailsBehaviour;
+import homework1.tourguide.TourGuideAgent;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
@@ -14,6 +15,8 @@ import java.util.logging.Logger;
  */
 public class CatalogRequest extends SimpleAchieveREInitiator{
     
+    private TourGuideAgent tga;
+    
     @Override
     protected ACLMessage prepareRequest(ACLMessage msg){
         msg.setContent("");
@@ -21,8 +24,9 @@ public class CatalogRequest extends SimpleAchieveREInitiator{
         return super.prepareRequest(msg);
     }
     
-    public CatalogRequest(Agent a,  ACLMessage am){
+    public CatalogRequest(TourGuideAgent a,  ACLMessage am){
         super(a, am);
+        this.tga = a;
     }
     
     @Override
@@ -34,6 +38,7 @@ public class CatalogRequest extends SimpleAchieveREInitiator{
             System.out.println("<"+myAgent.getLocalName()+">: not element found in the message");
             Logger.getLogger(GetDetailsBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
+        tga.catalog.put(msg.getSender(), catalog);
         System.out.println("<"+myAgent.getLocalName()+">: recieved catalog "+catalog[0]+", "+catalog[1]);
        
     }

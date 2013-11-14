@@ -1,6 +1,8 @@
 package homework1.tourguide;
 
+import homework1.profiler.Profile;
 import homework1.tourguide.behaviours.GenerateTourReciever;
+import homework1.tourguide.behaviours.NewMuseumNotificationBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -12,6 +14,7 @@ import jade.domain.FIPANames;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREResponder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,11 +28,14 @@ public class TourGuideAgent extends Agent {
     private AID id = new AID("tour_guide", AID.ISLOCALNAME);
     public ArrayList<AID> museums = new ArrayList<AID>();
     public String[][] informations = new String[3][4];
+    public Profile p;
+    public HashMap<AID,String[]> catalog = new HashMap<AID, String[]>();
 
     @Override
     protected void setup() {
         System.out.println("<" + getLocalName() + ">: started");
 
+        
         //searching offer catalog in services
         DFAgentDescription dfd = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
@@ -42,12 +48,7 @@ public class TourGuideAgent extends Agent {
             Logger.getLogger(TourGuideAgent.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("<" + getLocalName() + ">: found " + result.length + " museums");
-        if (result.length > 0) {
-            for (DFAgentDescription desc : result) {
-                museums.add(desc.getName());
-                System.out.println("<" + getLocalName() + ">: found " + desc.getName());
-            }
-        }
+        
 
         //subscription for new museums
         dfd = new DFAgentDescription();
@@ -58,7 +59,7 @@ public class TourGuideAgent extends Agent {
         sc.setMaxResults(new Long(1));
         send(DFService.createSubscriptionMessage(this, getDefaultDF(), dfd, sc));
 
-        //TODO create service behaviurs
+        addBehaviour(new NewMuseumNotificationBehaviour(this));
 
         //registering service
         dfd = new DFAgentDescription();

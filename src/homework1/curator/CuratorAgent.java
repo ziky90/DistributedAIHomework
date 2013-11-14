@@ -18,7 +18,7 @@ import jade.proto.AchieveREResponder;
  */
 public class CuratorAgent extends Agent {
 
-    AID id = new AID("curator", AID.ISLOCALNAME);
+    //AID id = new AID("curator", AID.ISLOCALNAME);
 
     @Override
     protected void setup() {
@@ -33,6 +33,7 @@ public class CuratorAgent extends Agent {
             return;
         }
         
+        System.out.println("<" + getLocalName() + ">: situation " +situation);
         ElementsDatabase.createDatabase(situation);
         
         System.out.println("<" + getLocalName() + ">: database generated");
@@ -43,7 +44,7 @@ public class CuratorAgent extends Agent {
         System.out.println("<" + getLocalName() + ">: behaviour set up");
 
         DFAgentDescription dfd = new DFAgentDescription();
-        dfd.setName(id);
+        dfd.setName(getAID());
         ServiceDescription sd1 = new ServiceDescription();
         ServiceDescription sd2 = new ServiceDescription();
         sd1.setType("offer artifact details");
