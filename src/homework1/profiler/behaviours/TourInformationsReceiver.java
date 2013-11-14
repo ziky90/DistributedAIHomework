@@ -9,7 +9,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.states.MsgReceiver;
 
 /**
- *
+ * Behaviour that is supposed to recieve the message from the tour guide agent
  * @author zikesjan
  */
 public class TourInformationsReceiver extends MsgReceiver{

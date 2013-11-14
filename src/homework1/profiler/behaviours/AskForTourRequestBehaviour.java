@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * One shot behaviour thet request for the profil creation to the tour guide agent
  * @author zikesjan
  */
 public class AskForTourRequestBehaviour extends OneShotBehaviour{
