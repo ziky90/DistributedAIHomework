@@ -3,21 +3,18 @@ package homework1.curator;
 import java.io.Serializable;
 
 /**
- * Representation of the one particular art element
+ * Representation of the one particular art element in the museum or galery
+ *
  * @author zikesjan
  */
-public class Element implements Serializable{
-    
+public class Element implements Serializable {
+
     private String name;
-    
     private String type;
-    
     private String author;
-    
     private int completationYear;
 
-    public Element(){
-        
+    public Element() {
     }
 
     public Element(String name, String author, int completationYear, String type) {
@@ -26,9 +23,7 @@ public class Element implements Serializable{
         this.completationYear = completationYear;
         this.type = type;
     }
-    
-    
-    
+
     public String getName() {
         return name;
     }
@@ -60,7 +55,4 @@ public class Element implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
-    
-    
-    
 }

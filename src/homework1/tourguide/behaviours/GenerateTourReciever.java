@@ -14,7 +14,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Behaviour that chose the museum based on the profile
+ * Cyclic Behaviour that recieves all the messages from the profiler agents ands
+ * starts the sequentional behaviour of all the following behaviours as paralel
+ * behaviour that asks the museums for the details and reply to the profiler
  *
  * @author zikesjan
  */
@@ -42,10 +44,8 @@ public class GenerateTourReciever extends CyclicBehaviour {
             } catch (UnreadableException ex) {
                 Logger.getLogger(GenerateTourReciever.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("<" + myAgent.getLocalName() + ">: message recieved and data stored from "+tga.p.getName());
-            
-            
-            
+            System.out.println("<" + myAgent.getLocalName() + ">: message recieved and data stored from " + tga.p.getName());
+
             SequentialBehaviour sb = new SequentialBehaviour(myAgent);
             ParallelBehaviour pb = new ParallelBehaviour(myAgent, ParallelBehaviour.WHEN_ALL);
             for (AID aid : tga.museums) {
@@ -60,6 +60,4 @@ public class GenerateTourReciever extends CyclicBehaviour {
             myAgent.addBehaviour(sb);
         }
     }
-    
-    
 }

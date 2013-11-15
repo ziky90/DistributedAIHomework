@@ -3,11 +3,12 @@ package homework1.tourguide.behaviours;
 import homework1.tourguide.TourGuideAgent;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
-import java.util.ArrayList;
 
 /**
- * AI and ML based recommendation system
+ * Inner AI recommendation system. It is prepared for advanced AI/ML techniques,
+ * but currently it only offer all the museums with all the artifacts
  *
+ * @author zikesjan
  */
 public class RecommedMuseum extends OneShotBehaviour {
 
@@ -20,18 +21,14 @@ public class RecommedMuseum extends OneShotBehaviour {
 
     @Override
     public void action() {
-
         int pos = 0;
         for (AID museum : tga.museums) {
-            //System.out.println(museum);
             tga.informations[pos][0] = museum.getLocalName();
             int counter = 1;
             for (String s2 : tga.catalog.get(museum)) {
-                System.out.println("<" + myAgent.getLocalName() + ">: match found");
                 tga.informations[pos][counter] = s2;
                 counter++;
             }
-
         }
         pos++;
     }

@@ -5,21 +5,20 @@ import java.util.ArrayList;
 
 /**
  * Object that holds the informations about the user
+ *
  * @author zikesjan
  */
-public class Profile implements Serializable{
+public class Profile implements Serializable {
+
     private String name;
-    
     private int age;
-    
     private String ocupancy;
-    
     private ArrayList<String> interests;
-    
-    public Profile(){
+
+    public Profile() {
     }
-    
-    public Profile(String name){
+
+    public Profile(String name) {
         this.name = name;
     }
 
@@ -29,8 +28,6 @@ public class Profile implements Serializable{
         this.ocupancy = ocupancy;
         this.interests = interests;
     }
-    
-    
 
     public String getName() {
         return name;
@@ -63,6 +60,4 @@ public class Profile implements Serializable{
     public void setInterests(ArrayList<String> interests) {
         this.interests = interests;
     }
-    
-    
 }

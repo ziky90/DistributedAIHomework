@@ -17,14 +17,14 @@ import java.util.logging.Logger;
 public class GetDetailsBehaviour extends SimpleAchieveREInitiator {
 
     private String message;
-    
+
     @Override
-    protected ACLMessage prepareRequest(ACLMessage msg){
+    protected ACLMessage prepareRequest(ACLMessage msg) {
         msg.setContent(message);
-        System.out.println("<"+myAgent.getLocalName()+">: sending message with request about "+message);
+        System.out.println("<" + myAgent.getLocalName() + ">: sending message with request about " + message);
         return super.prepareRequest(msg);
     }
-    
+
     public GetDetailsBehaviour(Agent a, ACLMessage am, String item) {
         super(a, am);
         this.message = item;
@@ -36,15 +36,15 @@ public class GetDetailsBehaviour extends SimpleAchieveREInitiator {
         try {
             e = (Element) msg.getContentObject();
         } catch (UnreadableException ex) {
-            System.out.println("<"+myAgent.getLocalName()+">: not element found in the message");
+            System.out.println("<" + myAgent.getLocalName() + ">: not element found in the message");
             Logger.getLogger(GetDetailsBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("<"+myAgent.getLocalName()+">: recieved reply "+e.getName()+", "+e.getAuthor()+", "+e.getType());
-       
+        System.out.println("<" + myAgent.getLocalName() + ">: recieved reply " + e.getName() + ", " + e.getAuthor() + ", " + e.getType());
+
     }
 
     @Override
     protected void handleNotUnderstood(ACLMessage msg) {
-        System.out.println("<"+myAgent.getLocalName()+">: recieved unknown reply "+msg.getContent());
+        System.out.println("<" + myAgent.getLocalName() + ">: recieved unknown reply " + msg.getContent());
     }
 }

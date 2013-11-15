@@ -11,17 +11,18 @@ import java.util.logging.Logger;
 
 /**
  * Behaviour thet sends the details about the museums to the profiler
+ *
  * @author zikesjan
  */
-public class TourSenderBehaviour extends OneShotBehaviour{
+public class TourSenderBehaviour extends OneShotBehaviour {
 
     private TourGuideAgent tga;
-    
-    public TourSenderBehaviour(TourGuideAgent a){
+
+    public TourSenderBehaviour(TourGuideAgent a) {
         super(a);
         this.tga = a;
     }
-    
+
     @Override
     public void action() {
         System.out.println("<" + myAgent.getLocalName() + ">: sending the informations about the tour");
@@ -35,5 +36,4 @@ public class TourSenderBehaviour extends OneShotBehaviour{
         }
         myAgent.send(inform);
     }
-    
 }

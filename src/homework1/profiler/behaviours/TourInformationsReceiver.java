@@ -10,7 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Behaviour that is supposed to recieve the message from the tour guide agent
+ * Behaviour that is supposed to recieve the message from the tour guide agent,
+ * its ussualy chained with the asking behaviour
  *
  * @author zikesjan
  */
@@ -26,10 +27,8 @@ public class TourInformationsReceiver extends MsgReceiver {
     @Override
     protected void handleMessage(ACLMessage msg) {
         if (msg == null) {
-            //error message
             System.out.println("<" + myAgent.getLocalName() + ">: incorrect message");
         } else {
-
             System.out.println("<" + myAgent.getLocalName() + ">: message with the museums and its details recieved");
 
             String[][] data = null;
@@ -38,22 +37,20 @@ public class TourInformationsReceiver extends MsgReceiver {
             } catch (UnreadableException ex) {
                 Logger.getLogger(TourInformationsReceiver.class.getName()).log(Level.SEVERE, null, ex);
             }
-
             for (int i = 0; i < 3; i++) {
                 String[] items = new String[3];
                 for (int j = 0; j < 4; j++) {
                     if (j == 0) {
                         if (data[i][0] != null || !"".equals(data[i][0])) {
                             tga.museums.add(data[i][0]);
-                            
+
                         }
-                    }else{
-                        items[j-1] = data[i][j];
+                    } else {
+                        items[j - 1] = data[i][j];
                     }
                     tga.map.put(data[i][0], items);
                 }
             }
-
             tga.askForTheMuseum();
         }
     }

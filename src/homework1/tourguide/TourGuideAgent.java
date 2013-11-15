@@ -19,7 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Tour guide agent that represents thetour guide
+ * Tour guide agent that represents the tour guide that recomends the museum
+ * based on the users preferences
  *
  * @author zikesjan
  */
@@ -29,13 +30,12 @@ public class TourGuideAgent extends Agent {
     public ArrayList<AID> museums = new ArrayList<AID>();
     public String[][] informations = new String[3][4];
     public Profile p;
-    public HashMap<AID,String[]> catalog = new HashMap<AID, String[]>();
+    public HashMap<AID, String[]> catalog = new HashMap<AID, String[]>();
 
     @Override
     protected void setup() {
         System.out.println("<" + getLocalName() + ">: started");
 
-        
         //searching offer catalog in services
         DFAgentDescription dfd = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
@@ -48,9 +48,8 @@ public class TourGuideAgent extends Agent {
             Logger.getLogger(TourGuideAgent.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("<" + getLocalName() + ">: found " + result.length + " museums");
-        
 
-        //subscription for new museums
+        //subscription for new museums and adding the behaviour that listens for it
         dfd = new DFAgentDescription();
         sd = new ServiceDescription();
         sd.setType("offer catalog");
@@ -58,10 +57,9 @@ public class TourGuideAgent extends Agent {
         SearchConstraints sc = new SearchConstraints();
         sc.setMaxResults(new Long(1));
         send(DFService.createSubscriptionMessage(this, getDefaultDF(), dfd, sc));
-
         addBehaviour(new NewMuseumNotificationBehaviour(this));
 
-        //registering service
+        //registering service offer tour
         dfd = new DFAgentDescription();
         dfd.setName(id);
         ServiceDescription sd1 = new ServiceDescription();
@@ -74,9 +72,7 @@ public class TourGuideAgent extends Agent {
             fe.printStackTrace();
         }
 
-        
         MessageTemplate mt = AchieveREResponder.createMessageTemplate(FIPANames.InteractionProtocol.FIPA_REQUEST);
         addBehaviour(new GenerateTourReciever(this, mt));
-
     }
 }

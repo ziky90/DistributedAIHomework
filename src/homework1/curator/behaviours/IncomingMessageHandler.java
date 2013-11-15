@@ -13,7 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * behaviour that should response to all the requests for the particular item
+ * behaviour that handles all the incoming messages to the CuratorAgent and that
+ * sends the responses to all the requests for the particular items or catalogs
  *
  * @author zikesjan
  */
@@ -25,6 +26,11 @@ public class IncomingMessageHandler extends SimpleAchieveREResponder {
         super(a, msg);
     }
 
+    /**
+     * Diversing the type of the message basedon the incoming string and then
+     * handlig it and replying
+     *
+     */
     @Override
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) {
         ACLMessage reply = request.createReply();
@@ -45,7 +51,7 @@ public class IncomingMessageHandler extends SimpleAchieveREResponder {
             Element e = ElementsDatabase.getElement(name);
             if (e != null) {
                 try {
-                    reply.setContentObject(e);                                  //XXX maybe feasable way how to send objects
+                    reply.setContentObject(e);
                     reply.setPerformative(ACLMessage.INFORM);
 
                 } catch (IOException ex) {

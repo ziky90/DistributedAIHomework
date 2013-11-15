@@ -11,18 +11,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * One shot behaviour thet request for the profil creation to the tour guide agent
+ * One shot behaviour that request for the tour to the tour guide agent it is
+ * ussualy chained with information recieving behaviour
+ *
  * @author zikesjan
  */
-public class AskForTourRequestBehaviour extends OneShotBehaviour{
+public class AskForTourRequestBehaviour extends OneShotBehaviour {
 
     private ProfilerAgent pa;
-    
-    public AskForTourRequestBehaviour(ProfilerAgent a){
+
+    public AskForTourRequestBehaviour(ProfilerAgent a) {
         super(a);
         this.pa = a;
     }
-    
+
     @Override
     public void action() {
         System.out.println("<" + myAgent.getLocalName() + ">: sending the request for the informations about the tour");
@@ -36,5 +38,4 @@ public class AskForTourRequestBehaviour extends OneShotBehaviour{
         }
         myAgent.send(inform);
     }
-    
 }

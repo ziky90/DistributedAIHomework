@@ -1,7 +1,6 @@
 package homework1.curator;
 
 import homework1.curator.behaviours.IncomingMessageHandler;
-import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -12,14 +11,17 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREResponder;
 
 /**
- * Agent that represents the curator
+ * Agent that represents the curator. One instance stands for one particular
+ * museum.
  *
  * @author zikesjan
  */
 public class CuratorAgent extends Agent {
 
-    //AID id = new AID("curator", AID.ISLOCALNAME);
-
+    /**
+     * Agent is just starting the behaviour that handles all the requests and
+     * register them as services to the DF catalog
+     */
     @Override
     protected void setup() {
         System.out.println("<" + getLocalName() + ">: started");
@@ -28,16 +30,16 @@ public class CuratorAgent extends Agent {
         int situation = 0;
         if (args != null) {
             situation = Integer.parseInt((String) args[0]);
-        }else{
+        } else {
             System.out.println("<" + getLocalName() + ">: particular museum not set -> terminating");
             return;
         }
-        
-        System.out.println("<" + getLocalName() + ">: situation " +situation);
+
+        System.out.println("<" + getLocalName() + ">: situation " + situation);
         ElementsDatabase.createDatabase(situation);
-        
+
         System.out.println("<" + getLocalName() + ">: database generated");
-        
+
         MessageTemplate mt = AchieveREResponder.createMessageTemplate(FIPANames.InteractionProtocol.FIPA_REQUEST);
         addBehaviour(new IncomingMessageHandler(this, mt));
 
@@ -58,7 +60,7 @@ public class CuratorAgent extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
-        
+
         System.out.println("<" + getLocalName() + ">: registered to the DF");
     }
 }
