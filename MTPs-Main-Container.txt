@@ -1,1 +1,1 @@
-http://c213-89-201-88.bredband.comhem.se:7778/acc
+http://localhost:7778/acc

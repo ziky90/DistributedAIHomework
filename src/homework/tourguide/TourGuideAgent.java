@@ -1,8 +1,8 @@
-package homework1.tourguide;
+package homework.tourguide;
 
-import homework1.profiler.Profile;
-import homework1.tourguide.behaviours.GenerateTourReciever;
-import homework1.tourguide.behaviours.NewMuseumNotificationBehaviour;
+import homework.profiler.Profile;
+import homework.tourguide.behaviours.GenerateTourReciever;
+import homework.tourguide.behaviours.NewMuseumNotificationBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;

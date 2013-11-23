@@ -1,6 +1,6 @@
-package homework1.tourguide.behaviours;
+package homework.tourguide.behaviours;
 
-import homework1.tourguide.TourGuideAgent;
+import homework.tourguide.TourGuideAgent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;

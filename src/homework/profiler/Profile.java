@@ -1,4 +1,4 @@
-package homework1.profiler;
+package homework.profiler;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package homework1.profiler.behaviours;
+package homework.profiler.behaviours;
 
-import homework1.curator.Element;
+import homework.curator.Element;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;

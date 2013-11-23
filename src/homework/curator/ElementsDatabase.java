@@ -1,4 +1,4 @@
-package homework1.curator;
+package homework.curator;
 
 import java.util.HashMap;
 
@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class ElementsDatabase {
 
-    private static HashMap<String, Element> data;
+    private HashMap<String, Element> data;
 
     /**
      * for the show case there is artificialy created the inventory based on the
@@ -17,7 +17,7 @@ public class ElementsDatabase {
      *
      * @param situation int (0,2)
      */
-    public static void createDatabase(int situation) {
+    public void createDatabase(int situation) {
         data = new HashMap<String, Element>();
 
         switch (situation) {
@@ -52,13 +52,21 @@ public class ElementsDatabase {
 
     }
 
-    public static Element getElement(String s) {
+    public Element getElement(String s) {
         return data.get(s);
     }
+    
+    public Element getElement(int p){
+        return data.get(data.keySet().iterator().next());
+    }
 
-    public static String[] getCatalog() {
+    public String[] getCatalog() {
         String[] catalog = new String[data.keySet().size()];
         catalog = data.keySet().toArray(catalog);
         return catalog;
+    }
+    
+    public void addElement(Element e){
+        data.put(e.getName(), e);
     }
 }

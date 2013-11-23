@@ -1,7 +1,7 @@
-package homework1.tourguide.behaviours;
+package homework.tourguide.behaviours;
 
-import homework1.profiler.behaviours.GetDetailsBehaviour;
-import homework1.tourguide.TourGuideAgent;
+import homework.profiler.behaviours.GetDetailsBehaviour;
+import homework.tourguide.TourGuideAgent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.SimpleAchieveREInitiator;

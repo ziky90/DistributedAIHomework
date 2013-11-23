@@ -1,6 +1,6 @@
-package homework1.profiler.behaviours;
+package homework.profiler.behaviours;
 
-import homework1.profiler.ProfilerAgent;
+import homework.profiler.ProfilerAgent;
 import jade.core.behaviours.DataStore;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

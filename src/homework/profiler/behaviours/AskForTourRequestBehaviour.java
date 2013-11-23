@@ -1,7 +1,7 @@
-package homework1.profiler.behaviours;
+package homework.profiler.behaviours;
 
-import homework1.profiler.ProfilerAgent;
-import homework1.tourguide.behaviours.TourSenderBehaviour;
+import homework.profiler.ProfilerAgent;
+import homework.tourguide.behaviours.TourSenderBehaviour;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPANames;

@@ -1,9 +1,9 @@
-package homework1.profiler;
+package homework.profiler;
 
-import homework1.profiler.behaviours.AskForTourRequestBehaviour;
-import homework1.profiler.behaviours.GetDetailsBehaviour;
-import homework1.profiler.behaviours.TourInformationsReceiver;
-import homework1.tourguide.TourGuideAgent;
+import homework.profiler.behaviours.AskForTourRequestBehaviour;
+import homework.profiler.behaviours.GetDetailsBehaviour;
+import homework.profiler.behaviours.TourInformationsReceiver;
+import homework.tourguide.TourGuideAgent;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.DataStore;

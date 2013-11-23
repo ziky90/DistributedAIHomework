@@ -1,4 +1,4 @@
-package homework1.curator;
+package homework.curator;
 
 import java.io.Serializable;
 

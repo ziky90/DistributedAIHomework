@@ -1,7 +1,7 @@
-package homework1.tourguide.behaviours;
+package homework.tourguide.behaviours;
 
-import homework1.profiler.Profile;
-import homework1.tourguide.TourGuideAgent;
+import homework.profiler.Profile;
+import homework.tourguide.TourGuideAgent;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.ParallelBehaviour;

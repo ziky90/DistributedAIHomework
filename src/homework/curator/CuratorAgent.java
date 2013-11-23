@@ -1,14 +1,13 @@
-package homework1.curator;
+package homework.curator;
 
-import homework1.curator.behaviours.IncomingMessageHandler;
+import homework.curator.behaviours.IncomingMessageHandler;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
-import jade.domain.FIPANames;
+import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.proto.AchieveREResponder;
 
 /**
  * Agent that represents the curator. One instance stands for one particular
@@ -17,6 +16,10 @@ import jade.proto.AchieveREResponder;
  * @author zikesjan
  */
 public class CuratorAgent extends Agent {
+
+    public int maxBid;
+    public int optimalBid;
+    public ElementsDatabase ed = new ElementsDatabase();
 
     /**
      * Agent is just starting the behaviour that handles all the requests and
@@ -27,7 +30,7 @@ public class CuratorAgent extends Agent {
         System.out.println("<" + getLocalName() + ">: started");
 
         Object[] args = getArguments();
-        int situation = 0;
+        int situation;
         if (args != null) {
             situation = Integer.parseInt((String) args[0]);
         } else {
@@ -36,12 +39,38 @@ public class CuratorAgent extends Agent {
         }
 
         System.out.println("<" + getLocalName() + ">: situation " + situation);
-        ElementsDatabase.createDatabase(situation);
+        ed.createDatabase(situation);
+        switch (situation) {
+            case (0): {
+                maxBid = 100;
+                optimalBid = 80;
+                break;
+            }
+            case (1): {
+                maxBid = 126;
+                optimalBid = 60;
+                break;
+            }
+            case (2): {
+                maxBid = 116;
+                optimalBid = 85;
+                break;
+            }
+        }
 
         System.out.println("<" + getLocalName() + ">: database generated");
 
-        MessageTemplate mt = AchieveREResponder.createMessageTemplate(FIPANames.InteractionProtocol.FIPA_REQUEST);
-        addBehaviour(new IncomingMessageHandler(this, mt));
+        //assignment1 relict
+        //MessageTemplate mt = AchieveREResponder.createMessageTemplate(FIPANames.InteractionProtocol.FIPA_REQUEST);
+        //addBehaviour(new IncomingMessageHandler(this, mt));
+
+        //assignment2
+        MessageTemplate msgTemp = MessageTemplate.or(
+                MessageTemplate.or(
+                MessageTemplate.MatchPerformative(ACLMessage.INFORM),
+                MessageTemplate.MatchPerformative(ACLMessage.CFP)),
+                MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+        addBehaviour(new IncomingMessageHandler(this, msgTemp));
 
         System.out.println("<" + getLocalName() + ">: behaviour set up");
 

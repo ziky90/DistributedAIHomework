@@ -1,6 +1,6 @@
-package homework1.tourguide.behaviours;
+package homework.tourguide.behaviours;
 
-import homework1.tourguide.TourGuideAgent;
+import homework.tourguide.TourGuideAgent;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 
