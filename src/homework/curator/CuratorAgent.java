@@ -1,5 +1,6 @@
 package homework.curator;
 
+import homework.curator.behaviours.DutchAuctionResponderBehaviour;
 import homework.curator.behaviours.IncomingMessageHandler;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -70,7 +71,7 @@ public class CuratorAgent extends Agent {
                 MessageTemplate.MatchPerformative(ACLMessage.INFORM),
                 MessageTemplate.MatchPerformative(ACLMessage.CFP)),
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
-        addBehaviour(new IncomingMessageHandler(this, msgTemp));
+        addBehaviour(new DutchAuctionResponderBehaviour(this, msgTemp));
 
         System.out.println("<" + getLocalName() + ">: behaviour set up");
 
