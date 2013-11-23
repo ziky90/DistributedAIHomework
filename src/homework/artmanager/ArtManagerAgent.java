@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Agent that represents art manager that makes Auctions with goal to sell stuff
  * @author zikesjan
  */
 public class ArtManagerAgent extends Agent {
@@ -28,13 +28,14 @@ public class ArtManagerAgent extends Agent {
     @Override
     protected void setup() {
         findMuseums();
-        sendStartAuctionMessage();
+        Element e = new Element("David", "Michelangelo", 1367, "statue");
+        sendStartAuctionMessage(e);
         ACLMessage msg = new ACLMessage(ACLMessage.CFP);
         addBehaviour(new GeneralBehaviour(this, msg));
     }
     
     /**
-     * method that searches for all the museums
+     * method that searches for all the museums and save them
      */
     private void findMuseums(){
         DFAgentDescription dfd = new DFAgentDescription();
@@ -53,10 +54,12 @@ public class ArtManagerAgent extends Agent {
         }
     }
 
-    private void sendStartAuctionMessage() {
+    /**
+     * method that runs the auction
+     */
+    private void sendStartAuctionMessage(Element e) {
         try {
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-            Element e = new Element("David", "Michelangelo", 1367, "statue");
             msg = addReceivers(msg);
             msg.setContentObject(e);
             this.send(msg);
@@ -66,6 +69,11 @@ public class ArtManagerAgent extends Agent {
         }
     }
 
+    /**
+     * method that add all the museums to the recievers of the message
+     * @param msg
+     * @return 
+     */
     public ACLMessage addReceivers(ACLMessage msg) {
         for (AID aid : museums) {
             msg.addReceiver(aid);

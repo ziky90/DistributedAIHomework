@@ -6,7 +6,7 @@ import jade.proto.ContractNetInitiator;
 import java.util.Vector;
 
 /**
- *
+ * Basicaly general Dutch Auction behaviour
  * @author zikesjan
  */
 public class GeneralBehaviour extends ContractNetInitiator {
@@ -76,6 +76,10 @@ public class GeneralBehaviour extends ContractNetInitiator {
         return messages;
     }
 
+    /**
+     * Whenever one round of the auction ends the price is eithe decreased or auction finished
+     * @return 
+     */
     @Override
     public int onEnd() {
         if (ama.currentPrice == 0) {

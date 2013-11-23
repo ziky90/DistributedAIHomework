@@ -6,11 +6,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import jade.proto.SimpleAchieveREResponder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * Behaviour that deals with bidding and other interactions with the DutchAuction
  * @author zikesjan
  */
 public class DutchAuctionResponderBehaviour extends SimpleAchieveREResponder{
@@ -23,7 +21,11 @@ public class DutchAuctionResponderBehaviour extends SimpleAchieveREResponder{
         this.ca = a;
     }
     
-    
+    /**
+     * Method that handles requests and send appropriate responses
+     * @param request
+     * @return 
+     */
     @Override
     protected ACLMessage prepareResponse(ACLMessage request){
         if(request != null){
@@ -49,7 +51,7 @@ public class DutchAuctionResponderBehaviour extends SimpleAchieveREResponder{
                 //TODO AI deciding about price to bid
                 
             }else if(requestType == ACLMessage.REQUEST){
-                System.out.println("<" + myAgent.getLocalName() + ">: recieved request from dutch auction");
+                //System.out.println("<" + myAgent.getLocalName() + ">: recieved request from dutch auction");
             }
         }
         return null;
