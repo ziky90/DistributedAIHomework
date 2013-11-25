@@ -58,7 +58,7 @@ public class DutchAuctionResponderBehaviour extends SimpleAchieveREResponder {
                     return reply;
                 } else {
                     int difference = currentPrice - ca.optimalBid;
-                    if (difference == 0 || (int) Math.random() * difference == difference - 1) {
+                    if (difference == 0 || (int) (Math.random() * difference) == difference - 1) {
                         reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                         reply.setPerformative(ACLMessage.PROPOSE);
                         System.out.println("<" + myAgent.getLocalName() + ">: : ACCEPT : " + currentPrice);

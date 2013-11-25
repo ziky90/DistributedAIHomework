@@ -33,18 +33,18 @@ public class GeneralBehaviour extends ContractNetInitiator {
             messages.add(msg.createReply());
 
             if (msg.getPerformative() == ACLMessage.PROPOSE) {
-                System.out.println("<" + myAgent.getLocalName() + ">: recieved bid from" + msg.getSender().getLocalName() + ", " + msg.getContent());
+                System.out.println("<" + myAgent.getLocalName() + ">: recieved bid from " + msg.getSender().getLocalName());
 
                 ama.winner = msg.getSender();
                 ama.finnish = true;
 
             } else if (msg.getPerformative() == ACLMessage.REFUSE) {
-                System.out.println("<" + myAgent.getLocalName() + ">: rejected bid from" + msg.getSender().getLocalName());
+                System.out.println("<" + myAgent.getLocalName() + ">: rejected bid from " + msg.getSender().getLocalName());
             }
         }
 
         if (ama.winner != null) {
-            System.out.println("<" + myAgent.getLocalName() + ">: auction winner" + ama.winner.getLocalName());
+            System.out.println("<" + myAgent.getLocalName() + ">: auction winner " + ama.winner.getLocalName());
             for (ACLMessage msg : messages) {
                 msg.setPerformative(ACLMessage.INFORM);
 
