@@ -1,5 +1,6 @@
 package homework.curator;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -7,7 +8,7 @@ import java.util.HashMap;
  *
  * @author zikesjan
  */
-public class ElementsDatabase {
+public class ElementsDatabase implements Serializable{
 
     private HashMap<String, Element> data;
 
