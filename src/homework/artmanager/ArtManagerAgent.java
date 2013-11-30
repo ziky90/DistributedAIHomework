@@ -2,20 +2,23 @@ package homework.artmanager;
 
 import homework.artmanager.behaviours.GeneralBehaviour;
 import homework.curator.Element;
-import homework.tourguide.TourGuideAgent;
+import jade.content.lang.sl.SLCodec;
+import jade.content.onto.basic.Action;
+import jade.content.onto.basic.Result;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
+import jade.core.Location;
+import jade.domain.JADEAgentManagement.QueryAgentsOnLocation;
+import jade.domain.mobility.MobilityOntology;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.util.leap.Iterator;
+import jade.util.leap.List;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Agent that represents art manager that makes Auctions with goal to sell stuff
+ *
  * @author zikesjan
  */
 public class ArtManagerAgent extends Agent {
@@ -27,31 +30,63 @@ public class ArtManagerAgent extends Agent {
 
     @Override
     protected void setup() {
+        getContentManager().registerLanguage(new SLCodec());
+        getContentManager().registerOntology(MobilityOntology.getInstance());
         findMuseums();
         Element e = new Element("David", "Michelangelo", 1367, "statue");
         sendStartAuctionMessage(e);
         ACLMessage msg = new ACLMessage(ACLMessage.CFP);
         addBehaviour(new GeneralBehaviour(this, msg));
     }
-    
+
     /**
      * method that searches for all the museums and save them
      */
-    private void findMuseums(){
-        DFAgentDescription dfd = new DFAgentDescription();
-        ServiceDescription sd = new ServiceDescription();
-        sd.setType("offer catalog");
-        dfd.addServices(sd);
-        DFAgentDescription[] result = null;
+    private void findMuseums() {
+        Location myLocation = here();
+        ACLMessage query = prepareRequestToAMS(myLocation);
+        send(query);
+        MessageTemplate mt = MessageTemplate.MatchSender(getAMS());
+        ACLMessage response = blockingReceive(mt);
+        List residents = parseAMSResponse(response);
+        for (Iterator it = residents.iterator(); it.hasNext();) {
+            AID r = (AID) it.next();
+            if(!r.getLocalName().equals(getLocalName())){
+                museums.add(r);
+            }
+        }
+        
+        System.out.println("<" + getLocalName() + ">: found " + museums.size() + " museums");
+    }
+
+    private ACLMessage prepareRequestToAMS(Location where) {
+        ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
+        request.addReceiver(getAMS());
+        new SLCodec().getName();
+        request.setLanguage(new SLCodec().getName());
+        request.setOntology(MobilityOntology.getInstance().getName());
+        Action act = new Action();
+        act.setActor(getAMS());
+        QueryAgentsOnLocation action = new QueryAgentsOnLocation();
+        action.setLocation(where);
+        act.setAction(action);
         try {
-            result = DFService.search(this, dfd);
-        } catch (FIPAException ex) {
-            Logger.getLogger(TourGuideAgent.class.getName()).log(Level.SEVERE, null, ex);
+            getContentManager().fillContent(request, act);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println("<" + getLocalName() + ">: found " + result.length + " museums");
-        for(DFAgentDescription description : result){
-            museums.add(description.getName());
+        return request;
+    }
+
+    private List parseAMSResponse(ACLMessage response) {
+        Result results = null;
+        try {
+            results = (Result) getContentManager().extractContent(response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return results.getItems();
+
     }
 
     /**
@@ -71,8 +106,9 @@ public class ArtManagerAgent extends Agent {
 
     /**
      * method that add all the museums to the recievers of the message
+     *
      * @param msg
-     * @return 
+     * @return
      */
     public ACLMessage addReceivers(ACLMessage msg) {
         for (AID aid : museums) {

@@ -2,6 +2,7 @@ package homework.curator.behaviours;
 
 import homework.curator.CuratorAgent;
 import homework.curator.Element;
+import jade.core.Location;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -42,8 +43,18 @@ public class DutchAuctionResponderBehaviour extends SimpleAchieveREResponder {
                     String winner = request.getContent();
                     if (winner.equals(ca.getLocalName())) {
                         ca.ed.addElement(elementForBuy);
+                        for(Location l : ca.locations){
+                            if(l.getName().equals("Main-Container")){
+                                myAgent.doMove(l);
+                            }
+                        }
                         System.out.println("<" + myAgent.getLocalName() + ">: winner of the auction " + elementForBuy.getName() + " saved to the database");
                     } else {
+                        for(Location l : ca.locations){
+                            if(l.getName().equals("Main-Container")){
+                                myAgent.doMove(l);
+                            }
+                        }
                         System.out.println("<" + myAgent.getLocalName() + ">: action ended we've lost");
                     }
                 }

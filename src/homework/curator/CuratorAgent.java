@@ -1,5 +1,6 @@
 package homework.curator;
 
+import homework.curator.behaviours.CloneBehaviour;
 import homework.curator.behaviours.DutchAuctionResponderBehaviour;
 import homework.curator.behaviours.IncomingMessageHandler;
 import jade.content.ContentElement;
@@ -12,6 +13,8 @@ import jade.content.onto.basic.Result;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.Location;
+import jade.core.behaviours.ParallelBehaviour;
+import jade.core.behaviours.SequentialBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -84,6 +87,32 @@ public class CuratorAgent extends Agent {
         //MessageTemplate mt = AchieveREResponder.createMessageTemplate(FIPANames.InteractionProtocol.FIPA_REQUEST);
         //addBehaviour(new IncomingMessageHandler(this, mt));
 
+        //----------------------------------------------------------------------
+        //assignment 3
+        getContentManager().registerLanguage(new SLCodec());
+        getContentManager().registerOntology(MobilityOntology.getInstance());
+        sendRequest(new Action(getAMS(), new QueryPlatformLocationsAction()));
+        MessageTemplate mt = MessageTemplate.and(
+                MessageTemplate.MatchSender(getAMS()),
+                MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+        ACLMessage resp = blockingReceive(mt);
+        ContentElement ce = null;
+        try {
+            ce = getContentManager().extractContent(resp);
+        } catch (CodecException ex) {
+            Logger.getLogger(CuratorAgent.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UngroundedException ex) {
+            Logger.getLogger(CuratorAgent.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (OntologyException ex) {
+            Logger.getLogger(CuratorAgent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Result result = (Result) ce;
+        jade.util.leap.Iterator it = result.getItems().iterator();
+        while (it.hasNext()) {
+            locations.add((Location) it.next());
+        }
+        cloneAgent();
+
         //assignment2
         MessageTemplate msgTemp = MessageTemplate.or(
                 MessageTemplate.or(
@@ -112,31 +141,7 @@ public class CuratorAgent extends Agent {
 
         System.out.println("<" + getLocalName() + ">: registered to the DF");
 
-        //----------------------------------------------------------------------
-        //assignment 3
-        getContentManager().registerLanguage(new SLCodec());
-        getContentManager().registerOntology(MobilityOntology.getInstance());
-        sendRequest(new Action(getAMS(), new QueryPlatformLocationsAction()));
-        MessageTemplate mt = MessageTemplate.and(
-                MessageTemplate.MatchSender(getAMS()),
-                MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-        ACLMessage resp = blockingReceive(mt);
-        ContentElement ce = null;
-        try {
-            ce = getContentManager().extractContent(resp);
-        } catch (CodecException ex) {
-            Logger.getLogger(CuratorAgent.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UngroundedException ex) {
-            Logger.getLogger(CuratorAgent.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (OntologyException ex) {
-            Logger.getLogger(CuratorAgent.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Result result = (Result) ce;
-        jade.util.leap.Iterator it = result.getItems().iterator();
-        while (it.hasNext()) {
-            locations.add((Location) it.next());
-        }
-        cloneAgent();
+
     }
 
     /**
@@ -144,16 +149,13 @@ public class CuratorAgent extends Agent {
      */
     private void cloneAgent() {
         System.out.println("<" + getLocalName() + ">: cloning proces started");
-        String agentName = getLocalName();
-        AID aid = new AID(agentName, AID.ISLOCALNAME);
-
-        for (Location dest : locations) {
-            MobileAgentDescription mad = new MobileAgentDescription();
-            mad.setName(aid);
-            mad.setDestination(dest);
-            String newName = "Clone-" + agentName;
-            doClone(dest, newName);
+        SequentialBehaviour sb = new SequentialBehaviour();
+        for (int i = 0; i < 3; i++) {
+            for (Location l : locations) {
+                sb.addSubBehaviour(new CloneBehaviour(l, i));
+            }
         }
+        addBehaviour(sb);
         System.out.println("<" + getLocalName() + ">: cloned");
     }
 
